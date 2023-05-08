@@ -141,23 +141,28 @@ class Logger {
       if (_isNotRelease) {
         var rawMsg =
             msg + (e == null ? '' : '\n$e') + (s == null ? '' : '\n$s');
-        final tagStr = tag != null ? ' [$tag]' : '';
         final functionName = skipFunctionName
             ? ''
             : _getFunctionNameFromFrame(upperStackCnt: upperStackCnt);
 
-        final formattedMsg = _makeFormattedMsg(
-          type: type,
-          functionName: functionName,
-          msg: rawMsg,
-          tagStr: tagStr,
-        );
-        final msgList = _splitMsg(formattedMsg);
-
         if (Platform.isAndroid) {
-          _print(msgList: msgList, type: type);
+          MethodChannelLogger.logcat(
+            type: type,
+            functionName: functionName,
+            msg: rawMsg,
+            tag: tag,
+          );
         } else {
+          final tagStr = tag != null ? ' [$tag]' : '';
+          final formattedMsg = _makeFormattedMsg(
+            type: type,
+            functionName: functionName,
+            msg: rawMsg,
+            tagStr: tagStr,
+          );
+
           _log(msg: formattedMsg, type: type);
+          final msgList = _splitMsg(formattedMsg);
           _nsLog(msgList: msgList);
         }
       }

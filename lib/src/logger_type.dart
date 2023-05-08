@@ -45,4 +45,18 @@ extension LoggerTypeExt on LoggerType {
     Reset:   \x1B[0m
   */
 
+  String get level {
+    switch (this) {
+      case LoggerType.debug:
+        return "v";
+      case LoggerType.info:
+        return "i";
+      case LoggerType.warn:
+        return "w";
+      case LoggerType.error:
+        return "e";
+      case LoggerType.api:
+        return "d";
+    }
+  }
 }
